@@ -345,7 +345,7 @@ config LASAT
 
 config MACH_LOONGSON
 	bool "Loongson family of machines"
-	select SYS_SUPPORTS_ZBOOT
+	select SYS_SUPPORTS_ZBOOT_UART16550
 	help
 	  This enables the support of Loongson family of machines.
 
@@ -1714,6 +1714,15 @@ config CPU_LOONGSON2
 	bool
 	select CPU_SUPPORTS_32BIT_KERNEL
 	select CPU_SUPPORTS_64BIT_KERNEL
+	select CPU_SUPPORTS_HIGHMEM if ! EMBEDDED
+	select ARCH_WANT_OPTIONAL_GPIOLIB
+
+config CPU_LOONGSON1
+	bool
+	select CPU_MIPS32
+	select CPU_MIPSR2
+	select CPU_HAS_PREFETCH
+	select CPU_SUPPORTS_32BIT_KERNEL
 	select CPU_SUPPORTS_HIGHMEM
 	select CPU_SUPPORTS_HUGEPAGES
 
@@ -2394,7 +2403,7 @@ config CPU_SUPPORTS_MSA
 
 config ARCH_FLATMEM_ENABLE
 	def_bool y
-	depends on !NUMA && !CPU_LOONGSON2
+	depends on !NUMA && !(CPU_LOONGSON2 && HIBERNATION)
 
 config ARCH_DISCONTIGMEM_ENABLE
 	bool

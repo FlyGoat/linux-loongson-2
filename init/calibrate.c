@@ -21,6 +21,7 @@ static int __init lpj_setup(char *str)
 
 __setup("lpj=", lpj_setup);
 
+#ifndef ARCH_HAS_PREPARED_LPJ
 #ifdef ARCH_HAS_READ_CURRENT_TIMER
 
 /* This routine uses the read_current_timer() routine and gets the
@@ -171,6 +172,7 @@ static unsigned long calibrate_delay_direct(void)
 	return 0;
 }
 #endif
+#endif	/* ARCH_HAS_PREPARED_LPJ */
 
 /*
  * This is the number of bits of precision for the loops_per_jiffy.  Each
@@ -291,6 +293,7 @@ void calibrate_delay(void)
 		lpj = lpj_fine;
 		pr_info("Calibrating delay loop (skipped), "
 			"value calculated using timer frequency.. ");
+#ifndef ARCH_HAS_PREPARED_LPJ
 	} else if ((lpj = calibrate_delay_is_known())) {
 		;
 	} else if ((lpj = calibrate_delay_direct()) != 0) {
@@ -301,6 +304,7 @@ void calibrate_delay(void)
 		if (!printed)
 			pr_info("Calibrating delay loop... ");
 		lpj = calibrate_delay_converge();
+#endif	/* ARCH_HAS_PREPARED_LPJ */
 	}
 	per_cpu(cpu_loops_per_jiffy, this_cpu) = lpj;
 	if (!printed)

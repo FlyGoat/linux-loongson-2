@@ -11,6 +11,10 @@
 
 #ifdef __KERNEL__
 
+#ifdef CONFIG_CSRC_R4K
+#define ARCH_HAS_PREPARED_LPJ
+#endif
+
 #include <linux/compiler.h>
 
 #include <asm/cpu.h>

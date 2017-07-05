@@ -49,5 +49,6 @@ SECTIONS
 		*(.reginfo)
 		*(.comment)
 		*(.note)
+		*(.gnu.attributes)
 	}
 }
